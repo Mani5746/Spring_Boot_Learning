@@ -1,11 +1,15 @@
 package com.example.Week2Module.demoSpringBootIntro.controllers;
 
 import com.example.Week2Module.demoSpringBootIntro.dto.EmployeeDTO;
+import com.example.Week2Module.demoSpringBootIntro.entities.EmployeeEntity;
 import com.example.Week2Module.demoSpringBootIntro.repository.EmployeeRepository;
+import com.example.Week2Module.demoSpringBootIntro.services.EmployeeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 
 @RequestMapping(path = "/employees") // This will create the Default Path  for both Get and Post but It will prefer Get
@@ -18,29 +22,28 @@ public class EmployeeController {
 //      return "Secret message: hjnkmngbd23454";
 //  }
 
-  private final EmployeeRepository employeeRepository;
+private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     //@GetMapping("/employees/{employeeID}")
   @GetMapping(path = "/{employeeID}")
-  public EmployeeDTO getEmployeeID(@PathVariable Long employeeID){
-  return new EmployeeDTO(employeeID,"Manish","abc@gmail.com",25, LocalDate.of(2024,1,12),true);
+  public EmployeeDTO getEmployeeID(@PathVariable (name = "employeeID") Long id){
+      return employeeService.getEmployeeById(id);
 }
 
-  @GetMapping(path = "/employees")
-  public String getAllEmployees(@RequestParam(required=false) Integer age,@RequestParam(required=false) String sortBy){
+  @GetMapping
+  public List<EmployeeDTO> getAllEmployees(@RequestParam(required=false,name="inputAge") Integer age, @RequestParam(required=false) String sortBy){
 
-    return "Hi age "+ age + " " +sortBy;
+    return employeeService.getAllEmployees();
   }
 
   @PostMapping()  // We have to sent it via Client like Postman
   public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO inputEmployee){
 
-    inputEmployee.setId(100L);
-    return inputEmployee;
+    return employeeService.createNewEmployee(inputEmployee);
   }
 
   @PutMapping()

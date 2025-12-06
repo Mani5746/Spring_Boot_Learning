@@ -33,6 +33,11 @@
 			<artifactId>spring-boot-h2console</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.2.4</version>
+		</dependency>
 
 		<!-- Add Spring Web so @RestController, @GetMapping, etc. are available -->
 		<dependency>
