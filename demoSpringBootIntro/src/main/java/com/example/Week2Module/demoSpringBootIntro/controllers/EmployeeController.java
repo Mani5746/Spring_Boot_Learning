@@ -1,6 +1,7 @@
 package com.example.Week2Module.demoSpringBootIntro.controllers;
 
 import com.example.Week2Module.demoSpringBootIntro.dto.EmployeeDTO;
+import com.example.Week2Module.demoSpringBootIntro.repository.EmployeeRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,13 @@ public class EmployeeController {
 //      return "Secret message: hjnkmngbd23454";
 //  }
 
-  //@GetMapping("/employees/{employeeID}")
+  private final EmployeeRepository employeeRepository;
+
+    public EmployeeController(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
+    //@GetMapping("/employees/{employeeID}")
   @GetMapping(path = "/{employeeID}")
   public EmployeeDTO getEmployeeID(@PathVariable Long employeeID){
   return new EmployeeDTO(employeeID,"Manish","abc@gmail.com",25, LocalDate.of(2024,1,12),true);
