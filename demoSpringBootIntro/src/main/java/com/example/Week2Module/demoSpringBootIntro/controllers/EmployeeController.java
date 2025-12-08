@@ -4,6 +4,7 @@ import com.example.Week2Module.demoSpringBootIntro.dto.EmployeeDTO;
 import com.example.Week2Module.demoSpringBootIntro.entities.EmployeeEntity;
 import com.example.Week2Module.demoSpringBootIntro.repository.EmployeeRepository;
 import com.example.Week2Module.demoSpringBootIntro.services.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -51,14 +52,14 @@ private final EmployeeService employeeService;
   }
 
   @PostMapping()  // We have to sent it via Client like Postman
-  public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody EmployeeDTO inputEmployee){
+  public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody @Valid EmployeeDTO inputEmployee){
 
     EmployeeDTO savedEmployee= employeeService.createNewEmployee(inputEmployee);
     return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
   }
 
   @PutMapping(path="/{employeeID}")
-  public ResponseEntity<EmployeeDTO> updateEmployeeById(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long employeeID)
+  public ResponseEntity<EmployeeDTO> updateEmployeeById(@RequestBody @Valid EmployeeDTO employeeDTO,@PathVariable Long employeeID)
   {
      return ResponseEntity.ok(employeeService.updateEmployeeById(employeeDTO, employeeID));
   }

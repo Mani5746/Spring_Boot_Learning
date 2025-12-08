@@ -9,28 +9,24 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "employees")
+@Setter
+@Getter
 public class EmployeeEntity {
 
     @Id  // It is basically the to define the primary Key Neeche wala hmko autogenerate krke dega
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Setter
-    @Getter
+
     private Long id;
 
-    @Setter
-    @Getter
+    private Double salary;
     private String name;
 
-    @Setter
-    @Getter
     private String email;
 
-    @Getter
-    @Setter
+     private String role;
+
     private Integer age;
 
-    @Setter
-    @Getter
     private LocalDate dateOfJoining;
 
     private Boolean isActive;
