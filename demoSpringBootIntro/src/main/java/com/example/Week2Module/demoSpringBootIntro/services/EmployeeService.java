@@ -2,6 +2,7 @@ package com.example.Week2Module.demoSpringBootIntro.services;
 
 import com.example.Week2Module.demoSpringBootIntro.dto.EmployeeDTO;
 import com.example.Week2Module.demoSpringBootIntro.entities.EmployeeEntity;
+import com.example.Week2Module.demoSpringBootIntro.exceptions.ResourceNotFoundException;
 import com.example.Week2Module.demoSpringBootIntro.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -55,17 +56,25 @@ public class EmployeeService {
 
 
     public EmployeeDTO updateEmployeeById(EmployeeDTO employeeDTO, Long employeeID) {
+       isExistsByEmployeeId(employeeID);
+
+
         EmployeeEntity employeeEntity=modelMapper.map(employeeDTO,EmployeeEntity.class);
         employeeEntity.setId(employeeID);
         EmployeeEntity savedEmployeeEntity=employeeRepository.save(employeeEntity);
         return modelMapper.map(savedEmployeeEntity, EmployeeDTO.class);
     }
 
+    public void isExistsByEmployeeId(Long employeeId){
+       boolean exists= employeeRepository.existsById(employeeId);
+
+       if(!exists) throw new ResourceNotFoundException("Employee not found with id:"+ employeeId);
+    }
+
     public boolean deleteById(Long employeeId) {
 
-        if(!employeeRepository.existsById(employeeId)) return false;
-
-          employeeRepository.deleteById(employeeId);
+       isExistsByEmployeeId(employeeId);
+        employeeRepository.deleteById(employeeId);
           return true;
     }
 

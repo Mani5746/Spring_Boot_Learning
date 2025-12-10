@@ -2,6 +2,7 @@ package com.example.Week2Module.demoSpringBootIntro.controllers;
 
 import com.example.Week2Module.demoSpringBootIntro.dto.EmployeeDTO;
 import com.example.Week2Module.demoSpringBootIntro.entities.EmployeeEntity;
+import com.example.Week2Module.demoSpringBootIntro.exceptions.ResourceNotFoundException;
 import com.example.Week2Module.demoSpringBootIntro.repository.EmployeeRepository;
 import com.example.Week2Module.demoSpringBootIntro.services.EmployeeService;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.example.Week2Module.demoSpringBootIntro.services.EmployeeService.*;
@@ -42,8 +44,10 @@ private final EmployeeService employeeService;
 
        return employeeDTO.
                map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1)).
-               orElse(ResponseEntity.notFound().build());
+               orElseThrow(()-> new ResourceNotFoundException("Employee Not Found with id :" + id));
 }
+
+
 
   @GetMapping
   public ResponseEntity<List<EmployeeDTO>> getAllEmployees(@RequestParam(required=false,name="inputAge") Integer age, @RequestParam(required=false) String sortBy){
